@@ -59,7 +59,7 @@ flamegraph -o sparse_wrapper.svg -v -- example-cpp
 ```
 
 ### Install 2
-Use classic perl [flamegraph]([https://github.com/flamegraph-rs/flamegraph](https://github.com/brendangregg/FlameGraph)
+Use classic perl [flamegraph](https://github.com/brendangregg/FlameGraph)
 
 ```bash
 # Install tools needed for analysis like perf
@@ -72,6 +72,7 @@ https://github.com/brendangregg/FlameGraph.git
 perf record --call-graph dwarf example-cpp
 perf script > perf.out
 # You can read the report with cat perf.out ..
+
 cd <cloned-flamegraph-repo>
 ./stackcollapse-perf.pl <location-of-perf.out> > out.folded
 ./flamegraph.pl out.folded > file.svg
@@ -89,7 +90,15 @@ valgrind --leak-check=yes myprog arg1 arg2
 Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
 
 ## Check Eigen malloc 
-Use Eigen tools to make sure you are not allocation dynamic memory. see for example [here](https://stackoverflow.com/questions/33664976/avoiding-eigens-memory-allocation). We could point to ProxDDP or ProxQP and show how we use macros ect.
+Use Eigen tools to make sure you are not allocating memory where you do not want to do so -> it is slowing down your program. Check [proxqp](https://github.com/Simple-Robotics/proxsuite/blob/794607d4e35626fc4d5bb704f4f1796347412e71/include/proxsuite/fwd.hpp#L40) or [here](https://stackoverflow.com/questions/33664976/avoiding-eigens-memory-allocation).  
+
+The macros defined in `ProxQP` allow us to do
+```cpp
+PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
+output = superfast_function_without_alloctions();
+PROXSUITE_EIGEN_MALLOC_ALLOWED();
+```
+and if this code is compiled in `Debug` mode, we will have assertation errors if eigen is allocation memory inside the function.
 
 ## Checking for memory alloctions
 GUI to check how much memory is allocated in every function when executing a program.  
