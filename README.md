@@ -29,5 +29,7 @@ GUI to check how much memory is allocated in every function when executing a pro
 ### Install
 `sudo apt-get install valgrind kcachegrind graphviz`
 ### Usage
-`valgrind --tool=massif --xtree-memory=full <your-executable>`
-`kcachegrind <output-file-of-previous-cmd>
+```bash
+valgrind --tool=massif --xtree-memory=full <your-executable>
+kcachegrind <output-file-of-previous-cmd>
+```
