@@ -2,7 +2,7 @@
 Guidelines and notes about useful tools to analyze and optimize code.
 
 The idea is to gather some tools that we use to develop high performance code. We should provide information about how to install and use these tools.
-
+Let's begin by collecting all instructions here and later move them to subfolders for each tool if readme gets confusing.
 
 ## Debugging C++ code
 If you execute compiled experimental code or run a python script that is corresponding c++ bindings [Segmentation Faults](https://en.wikipedia.org/wiki/Segmentation_fault). Specific tools can help you to fix them.  
@@ -77,10 +77,16 @@ cd <cloned-flamegraph-repo>
 ./flamegraph.pl out.folded > file.svg
 # Now open the file.svg in your favorite browser in enjoy the interactive mode
 ```
-As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/tree/wj/nnl-rollout/scripts](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
+As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
 
 ## Finding memory leacks
-[Valgrind](https://valgrind.org/)
+[Valgrind](https://valgrind.org/) can automatically detect many memory management and threading bugs.
+```
+sudo apt install valgrind
+# Use valgrind with input to check for mem leak
+valgrind --leak-check=yes myprog arg1 arg2
+```
+Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
 
 ## Check Eigen malloc 
 Use Eigen tools to make sure you are not allocation dynamic memory. see for example [here](https://stackoverflow.com/questions/33664976/avoiding-eigens-memory-allocation). We could point to ProxDDP or ProxQP and show how we use macros ect.
