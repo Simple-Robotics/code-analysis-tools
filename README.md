@@ -12,16 +12,24 @@ If you execute compiled experimental code or run a python script that is corresp
 Use either gdb (linux) or lldb (macOS). The commands specified below work for both. 
 ### Usage C++
 ```bash
+# Start debugging session
 gdb <your-executable>
+
+# set breakpoints in two different ways, either on specific line for function
+b file.cpp:40`
+breakpoint set -n functionName
+
+# start
+run
 ```
-It will enter gdb and you can set breakpoint `b file.cpp:40` (specific line) or `breakpoint set -n functionName` (when entering function).
-Afterwards start the program with `run`. See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/gdb) for further details.
+See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/gdb) for further details.
 
 ### Usage Python bindings
 ```bash 
 gdb python
+# set breakpoints ect
+run your_script.py
 ```
-Set again your breakpoints and start by `run your_script.py`.  
 
 Once a program crashs, use `bt` to show the full backtrace.
 
