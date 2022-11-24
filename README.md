@@ -40,7 +40,6 @@ Checking how much time is spent for every function. Can help you to find the bot
 ### Install 1
 Use [Rust-powered flamegraph](https://github.com/flamegraph-rs/flamegraph) -> **fast**  
 
-
 ```bash
 # Install tools needed for analysis like perf
 sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`
@@ -55,10 +54,30 @@ cargo install flamegraph
 echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
 echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
 
-# Command to produce your flamegraph
-flamegraph -o sparse_wrapper.svg -v -- examples/cpp/example-cpp-first_example
+# Command to produce your flamegraph (use -c for custom options for perf)
+flamegraph -o sparse_wrapper.svg -v -- example-cpp
 ```
 
+### Install 2
+Use classic perl [flamegraph]([https://github.com/flamegraph-rs/flamegraph](https://github.com/brendangregg/FlameGraph)
+
+```bash
+# Install tools needed for analysis like perf
+sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`
+
+# Copy the repo
+https://github.com/brendangregg/FlameGraph.git
+
+# Run perf on your executable and create output repot in current dir
+perf record --call-graph dwarf example-cpp
+perf script > perf.out
+# You can read the report with cat perf.out ..
+cd <cloned-flamegraph-repo>
+./stackcollapse-perf.pl <location-of-perf.out> > out.folded
+./flamegraph.pl out.folded > file.svg
+# Now open the file.svg in your favorite browser in enjoy the interactive mode
+```
+As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/tree/wj/nnl-rollout/scripts](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
 
 ## Finding memory leacks
 [Valgrind](https://valgrind.org/)
