@@ -29,6 +29,29 @@ Once a program crashs, use `bt` to show the full backtrace.
 Checking how much time is spent for every function. Can help you to find the bottleneck in your code.
 [FlameGraph](https://github.com/brendangregg/FlameGraph) is a nice visual tool to display your stack trace.
 
+### Install 1
+Use [Rust-powered flamegraph](https://github.com/flamegraph-rs/flamegraph) -> **fast**  
+
+
+```bash
+# Install tools needed for analysis like perf
+sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -r`
+
+# Install rust on linux or macOS
+curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
+
+# Now you have the rust package managar cargo and you can do
+cargo install flamegraph
+
+# Necessary to allow access to cpu
+echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
+
+# Command to produce your flamegraph
+flamegraph -o sparse_wrapper.svg -v -- examples/cpp/example-cpp-first_example
+```
+
+
 ## Finding memory leacks
 [Valgrind](https://valgrind.org/)
 
