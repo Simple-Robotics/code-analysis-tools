@@ -1,7 +1,7 @@
 # code-analysis-tools
 Guidelines and notes about useful tools to analyze and optimize code.
 
-The idea is to gather some tools that we use to develop high performance code.
+The idea is to gather some tools that we use to develop high performance code. We should provide information about how to install and use these tools.
 
 
 ## Checking for speed
