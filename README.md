@@ -118,3 +118,17 @@ Some very [useful advices to optimize your C++ code that you should have in mind
 > Narrator: "also quite amusing to read..."
 
 A nice online course to [get started with C++](https://gitlab.inria.fr/formations/cpp/gettingstartedwithmoderncpp/tree/master) explaining most of the basic concepts in c++14/17.
+
+## Debug Github CI
+If you have a pipeline that is failing, and you would like to check some quick fixes directly on the CI machine [debug-via-ssh](https://github.com/marketplace/actions/debug-via-ssh) is precious:
+Sign into your account on [ngrok](https://ngrok.com/) (you can use github) and follow the readme to set it up locally (2mins).
+Copy the token you obtained from ngrok into the secrets section of your repo, specify a password for the SSH connection also as token of the repo. 
+Copy this to your workflow at the position where you would like to stop:
+```bash
+- name: Start SSH session
+  uses: luchihoratiu/debug-via-ssh@main
+  with:
+    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+    SSH_PASS: ${{ secrets.SSH_PASS }}
+```
+Run the CI and follow the output. Note: the option `continue-on-error: True` can be very useful the continue a failing workflow until the point where you ssh to it.
