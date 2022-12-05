@@ -50,7 +50,7 @@ curl --proto '=https' --tlsv1.3 https://sh.rustup.rs -sSf | sh
 # Now you have the rust package managar cargo and you can do
 cargo install flamegraph
 
-# Necessary to allow access to cpu
+# Necessary to allow access to cpu (only once)
 echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
 echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
 
@@ -67,6 +67,10 @@ sudo apt-get install linux-tools-common linux-tools-generic linux-tools-`uname -
 
 # Copy the repo
 https://github.com/brendangregg/FlameGraph.git
+
+# Necessary to allow access to cpu (only once)
+echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid
+echo 0 | sudo tee /proc/sys/kernel/kptr_restrict
 
 # Run perf on your executable and create output repot in current dir
 perf record --call-graph dwarf example-cpp
