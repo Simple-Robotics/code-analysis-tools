@@ -99,12 +99,12 @@ Use Eigen tools to make sure you are not allocating memory where you do not want
 The macros defined in `ProxQP` allow us to do
 ```cpp
 PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
-output = superfast_function_without_alloctions();
+output = superfast_function_without_allocations();
 PROXSUITE_EIGEN_MALLOC_ALLOWED();
 ```
 and if this code is compiled in `Debug` mode, we will have assertation errors if eigen is allocation memory inside the function.
 
-## Checking for memory alloctions
+## Checking for memory allocations
 GUI to check how much memory is allocated in every function when executing a program.  
 -> Valgrind + [KCachegrind](https://github.com/KDE/kcachegrind)
 
