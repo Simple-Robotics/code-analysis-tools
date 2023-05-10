@@ -4,6 +4,12 @@ Guidelines and notes about useful tools to analyze and optimize code.
 The idea is to gather some tools that we use to develop high performance code. We should provide information about how to install and use these tools.
 Let's begin by collecting all instructions here and later move them to subfolders for each tool if readme gets confusing.
 
+## Compiling
+Use **cache** to speed up the compilation. If you compile the same project again and again with small changes, this can save you a lot of time. It is easy to setup. Installation via [conda](https://anaconda.org/conda-forge/ccache) or via [apt-get](https://zoomadmin.com/HowToInstall/UbuntuPackage/ccache). See the manual for the different [run modes](https://manpages.ubuntu.com/manpages/jammy/man1/ccache.1.html). For cmake, you can use a flag
+```
+cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+```
+
 ## Debugging C++ code
 If you execute compiled experimental code or run a python script that is corresponding c++ bindings [Segmentation Faults](https://en.wikipedia.org/wiki/Segmentation_fault). Specific tools can help you to fix them.  
 
