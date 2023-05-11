@@ -1,22 +1,28 @@
 # code-analysis-tools
+
 Guidelines and notes about useful tools to analyze and optimize code.
 
 The idea is to gather some tools that we use to develop high performance code. We should provide information about how to install and use these tools.
 Let's begin by collecting all instructions here and later move them to subfolders for each tool if readme gets confusing.
 
 ## Compiling
+
 Use **cache** to speed up the compilation. If you compile the same project again and again with small changes, this can save you a lot of time. It is easy to setup. Installation via [conda](https://anaconda.org/conda-forge/ccache) or via [apt-get](https://zoomadmin.com/HowToInstall/UbuntuPackage/ccache). See the manual for the different [run modes](https://manpages.ubuntu.com/manpages/jammy/man1/ccache.1.html). For cmake, you can use a flag
+
 ```
 cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 ```
 
 ## Debugging C++ code
+
 If you execute compiled experimental code or run a python script that is corresponding c++ bindings [Segmentation Faults](https://en.wikipedia.org/wiki/Segmentation_fault). Specific tools can help you to fix them.  
 
 **FIRST: compile in Debug mode**  
 
-Use either gdb (linux) or lldb (macOS). The commands specified below work for both. 
+Use either gdb (linux) or lldb (macOS). The commands specified below work for both.
+
 ### Usage C++
+
 ```bash
 # Start debugging session
 gdb <your-executable>
@@ -35,7 +41,7 @@ See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/
 
 ```bash
 gdb python
-# set breakpoints ect
+# set breakpoints etc.
 run your_script.py
 ```
 
@@ -51,14 +57,22 @@ You can spawn a Python interpreter in-context anywhere in your code:
 __import__("IPython").embed()
 ```
 
-Adding breakpoints in a Python code can be done using `pdb`, with:
+You may add breakpoints in your Python code using:
 
 ```python
-import pdb
-pdb.set_trace() # Execution stops at this point
+breakpoint()
 ```
 
-For a graphical interface used to debug code, check [pudb](https://documen.tician.de/pudb/starting.html) (similar usage).
+For a better debugger than the basic `pdb` one, you may install [pdb++](https://github.com/pdbpp/pdbpp) using one of the following commands:
+
+```bash
+pip install pdbpp # In a pip environment
+conda install -c conda-forge pdbpp # In a Conda environment
+```
+
+With `pdb++`, add breakpoints again with `breakpoint()`. You may run `sticky` in the pdb++ environment to toggle a sticky mode (with colored code of the whole function) and start a Python interpreter with the `interact` command.
+
+For debugging code with a graphical interface, check [pudb](https://documen.tician.de/pudb/starting.html) (similar usage).
 
 ## Performance analysis
 
@@ -88,6 +102,7 @@ flamegraph -o sparse_wrapper.svg -v -- example-cpp
 ```
 
 ### Install 2
+
 Use classic perl [flamegraph](https://github.com/brendangregg/FlameGraph)
 
 ```bash
@@ -134,7 +149,7 @@ The macros defined in `ProxQP` allow us to do
 
 ```cpp
 PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
-output = superfast_function_without_alloctions();
+output = superfast_function_without_allocations();
 PROXSUITE_EIGEN_MALLOC_ALLOWED();
 ```
 
@@ -181,10 +196,12 @@ Some very [useful advices to optimize your C++ code that you should have in mind
 A nice online course to [get started with C++](https://gitlab.inria.fr/formations/cpp/gettingstartedwithmoderncpp/tree/master) explaining most of the basic concepts in c++14/17.
 
 ## Debug Github CI
+
 If you have a pipeline that is failing, and you would like to check some quick fixes directly on the CI machine [debug-via-ssh](https://github.com/marketplace/actions/debug-via-ssh) is precious:
 Sign into your account on [ngrok](https://ngrok.com/) (you can use github) and follow the readme to set it up locally (2mins).
-Copy the token you obtained from ngrok into the secrets section of your repo, specify a password for the SSH connection also as token of the repo. 
+Copy the token you obtained from ngrok into the secrets section of your repo, specify a password for the SSH connection also as token of the repo.
 Copy this to your workflow at the position where you would like to stop:
+
 ```bash
 - name: Start SSH session
   uses: luchihoratiu/debug-via-ssh@main
@@ -192,4 +209,5 @@ Copy this to your workflow at the position where you would like to stop:
     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     SSH_PASS: ${{ secrets.SSH_PASS }}
 ```
+
 Run the CI and follow the output. Note: the option `continue-on-error: True` can be very useful the continue a failing workflow until the point where you ssh to it.
