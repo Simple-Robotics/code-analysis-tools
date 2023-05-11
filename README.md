@@ -142,3 +142,5 @@ Copy this to your workflow at the position where you would like to stop:
     SSH_PASS: ${{ secrets.SSH_PASS }}
 ```
 Run the CI and follow the output. Note: the option `continue-on-error: True` can be very useful the continue a failing workflow until the point where you ssh to it.
+
+[lhotari/action-upterm](https://github.com/lhotari/action-upterm) and [action-tmate](https://github.com/marketplace/actions/debugging-with-tmate) are also two alternative GitHub actions with similar functionality that can be ran directly without any setup.
