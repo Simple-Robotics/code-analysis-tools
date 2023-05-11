@@ -28,22 +28,45 @@ breakpoint set -n functionName
 # start
 run
 ```
+
 See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/gdb) for further details.
 
 ### Usage Python bindings
-```bash 
+
+```bash
 gdb python
 # set breakpoints ect
 run your_script.py
 ```
 
-Once a program crashs, use `bt` to show the full backtrace.
+Once a program crashes, use `bt` to show the full backtrace.
 
-## Performance analysis 
+## Debugging Python code
+
+### Quick-and-dirty one-liner
+
+You can spawn a Python interpreter in-context anywhere in your code:
+
+```python
+__import__("IPython").embed()
+```
+
+Adding breakpoints in a Python code can be done using `pdb`, with:
+
+```python
+import pdb
+pdb.set_trace() # Execution stops at this point
+```
+
+For a graphical interface used to debug code, check [pudb](https://documen.tician.de/pudb/starting.html) (similar usage).
+
+## Performance analysis
+
 Checking how much time is spent for every function. Can help you to find the bottleneck in your code.
 [FlameGraph](https://github.com/brendangregg/FlameGraph) is a nice visual tool to display your stack trace.
 
 ### Install 1
+
 Use [Rust-powered flamegraph](https://github.com/flamegraph-rs/flamegraph) -> **fast**  
 
 ```bash
@@ -88,41 +111,69 @@ cd <cloned-flamegraph-repo>
 ./flamegraph.pl out.folded > file.svg
 # Now open the file.svg in your favorite browser in enjoy the interactive mode
 ```
+
 As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
 
 ## Finding memory leacks
+
 [Valgrind](https://valgrind.org/) can automatically detect many memory management and threading bugs.
+
 ```
 sudo apt install valgrind
 # Use valgrind with input to check for mem leak
 valgrind --leak-check=yes myprog arg1 arg2
 ```
+
 Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
 
-## Check Eigen malloc 
+## Check Eigen malloc
+
 Use Eigen tools to make sure you are not allocating memory where you do not want to do so -> it is slowing down your program. Check [proxqp](https://github.com/Simple-Robotics/proxsuite/blob/794607d4e35626fc4d5bb704f4f1796347412e71/include/proxsuite/fwd.hpp#L40) or [here](https://stackoverflow.com/questions/33664976/avoiding-eigens-memory-allocation).  
 
 The macros defined in `ProxQP` allow us to do
+
 ```cpp
 PROXSUITE_EIGEN_MALLOC_NOT_ALLOWED();
 output = superfast_function_without_alloctions();
 PROXSUITE_EIGEN_MALLOC_ALLOWED();
 ```
+
 and if this code is compiled in `Debug` mode, we will have assertation errors if eigen is allocation memory inside the function.
 
 ## Checking for memory alloctions
+
 GUI to check how much memory is allocated in every function when executing a program.  
 -> Valgrind + [KCachegrind](https://github.com/KDE/kcachegrind)
 
 ### Install
+
 `sudo apt-get install valgrind kcachegrind graphviz`
+
 ### Usage
+
 ```bash
 valgrind --tool=massif --xtree-memory=full <your-executable>
 kcachegrind <output-file-of-previous-cmd>
 ```
 
+## Performance analysis in Python
+
+Python provides a profiler named [cProfile](https://docs.python.org/3/library/profile.html). To profile a script, simply add `-m cProfile -o profile.prof` when running the script, i.e.:
+
+```bash
+python -m cProfile -o profile.prof my_script.py --my_args
+```
+
+This saves the result in the specified output path (here, `profile.txt`), which you can then visualize with snakeviz: `pip install snakeviz` and then:
+
+```bash
+snakeviz profile.prof
+```
+
+This opens a browser tab with an interactive visualization of execution times.
+
 ## External resources
+
 Some very [useful advices to optimize your C++ code that you should have in mind](https://cpp-optimizations.netlify.app/).
 
 > Narrator: "also quite amusing to read..."
