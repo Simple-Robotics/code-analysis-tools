@@ -33,11 +33,21 @@ See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/
 ### Usage Python bindings
 ```bash 
 gdb python
-# set breakpoints ect
+# set breakpoints etc.
 run your_script.py
 ```
 
-Once a program crashs, use `bt` to show the full backtrace.
+Once a program crashes, use `bt` to show the full backtrace.
+
+## Debugging Python code
+
+### Quick-and-dirty one-liner
+
+You can spawn a Python interpreter in-context anywhere in your code:
+
+```python
+__import__("IPython").embed()
+```
 
 ## Performance analysis 
 Checking how much time is spent for every function. Can help you to find the bottleneck in your code.
