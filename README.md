@@ -149,3 +149,4 @@ Run the CI and follow the output. Note: the option `continue-on-error: True` can
 - name: Start SSH session
   uses: lhotari/action-upterm@v1
 ```
+Consider using the action with `limit-access-to-actor: true`, to limit access to your account.
