@@ -176,7 +176,7 @@ Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-t
 
 ### AddressSanitizer
 
-[AddressSanitizer](https://github.com/google/sanitizers) (aka ASan) is a memory error detector for C/C++. For cmake, you can add link option in `CMakeLists.txt`
+[AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) (aka ASan) is a memory error detector for C/C++. For cmake, you can add link option in `CMakeLists.txt`
 
 ```
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
