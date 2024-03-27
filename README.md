@@ -13,6 +13,14 @@ Use **cache** to speed up the compilation. If you compile the same project again
 cmake .. -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
 ```
 
+Use [Clang](https://clang.llvm.org/) & [Ninja](https://github.com/ninja-build/ninja) to speed up the compilation.
+
+Use [**mold**](https://github.com/rui314/mold) to speed up the linking. For cmake, you can add link option in `CMakeLists.txt`
+
+```
+add_link_options("-fuse-ld=mold")
+```
+
 ## Debugging C++ code
 
 If you execute compiled experimental code or run a python script that is corresponding c++ bindings [Segmentation Faults](https://en.wikipedia.org/wiki/Segmentation_fault). Specific tools can help you to fix them.  
@@ -36,6 +44,31 @@ run
 ```
 
 See [here](https://web.stanford.edu/class/archive/cs/cs107/cs107.1194/resources/gdb) for further details.
+
+### Core dump file analysis
+
+Core dump is another way to debug. First, enable core files
+
+```bash
+ulimit -c unlimited
+```
+Then, view the backtrace in gdb
+
+```bash
+gdb path/to/my/executable path/to/coredumpfile
+```
+See [here](https://askubuntu.com/questions/1349047/where-do-i-find-core-dump-files-and-how-do-i-view-and-analyze-the-backtrace-st) for further details.
+
+### Usage Backward 
+
+[Backward](https://github.com/bombela/backward-cpp) is a beautiful stack trace pretty printer for C++. You need to compile your project with generation of debug symbols enabled, usually `-g` with clang++ and g++. Add the following code to the source file
+
+```c++
+#include <backward.hpp>
+namespace backward {
+  backward::SignalHandling sh;
+}
+```
 
 ### Usage Python bindings
 
@@ -140,6 +173,15 @@ valgrind --leak-check=yes myprog arg1 arg2
 ```
 
 Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
+
+### AddressSanitizer
+
+[AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizer) (aka ASan) is a memory error detector for C/C++. For cmake, you can add link option in `CMakeLists.txt`
+
+```
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fsanitize=address")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
+```
 
 ## Check Eigen malloc
 
