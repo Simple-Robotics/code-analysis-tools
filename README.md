@@ -261,3 +261,36 @@ Run the CI and follow the output. Note: the option `continue-on-error: True` can
   uses: lhotari/action-upterm@v1
 ```
 Consider using the action with `limit-access-to-actor: true`, to limit access to your account.
+
+
+## Profile C++ compile time
+
+When doing heavy template meta-programming in C++ it can be useful to analyze what part of the code is taking a long time to compile.
+
+[clang](https://clang.llvm.org) allows to profile the compilation time. To activate this function, add the `-ftime-trace` option while building.
+
+In a CMake project, you can do this with the following command line:
+
+```bash
+cmake .. -DCMAKE_CXX_FLAGS="-ftime-trace"
+```
+
+Each .cpp will then produce a .json file. To find them you can use the following command line:
+
+```bash
+find . -iname "*.json"
+```
+
+Then, you can open the file with the [Chromium tracing tool](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/). Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
+
+![Compile time profile displayed with Chromimum](./resources/cpp-compilation-time-profile.png)
+
+### Note for GNU/Linux users
+
+`-ftime-trace` is only available with [clang](https://clang.llvm.org). With [conda](https://docs.conda.io/en/latest/), you can install it with the following command line `conda install clangxx`.
+
+Then, when running CMake **for the first time** use the following command:
+
+```bash
+CC=clang CXX=clang++ cmake ..
+```
