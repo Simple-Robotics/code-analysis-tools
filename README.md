@@ -281,7 +281,7 @@ Each .cpp will then produce a .json file. To find them you can use the following
 find . -iname "*.json"
 ```
 
-Then, you can open the file with Chromium tracing tool. Open the [about:tracing](chrome://tracing) URL in Chromium and load the .json. You will have the following display:
+Then, you can open the file with Chromium tracing tool. Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
 
 ![Compile time profile displayed with Chromimum](./resources/cpp-compilation-time-profile.png)
 
