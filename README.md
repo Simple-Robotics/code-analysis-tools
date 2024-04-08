@@ -267,9 +267,9 @@ Consider using the action with `limit-access-to-actor: true`, to limit access to
 
 When doing heavy template meta-programming in C++ it can be useful to analyze what part of the code is taking a long time to compile.
 
-[clang](https://clang.llvm.org) allow to profile the compilation time. To activate this function, add `-ftime-trace` option while building.
+[clang](https://clang.llvm.org) allows to profile the compilation time. To activate this function, add the `-ftime-trace` option while building.
 
-On CMake project, you can do this with the following command line:
+In a CMake project, you can do this with the following command line:
 
 ```bash
 cmake .. -DCMAKE_CXX_FLAGS="-ftime-trace"
@@ -281,11 +281,11 @@ Each .cpp will then produce a .json file. To find them you can use the following
 find . -iname "*.json"
 ```
 
-Then, you can open the file with Chromium tracing tool. Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
+Then, you can open the file with the [Chromium tracing tool](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/). Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
 
 ![Compile time profile displayed with Chromimum](./resources/cpp-compilation-time-profile.png)
 
-### Note for GNU/Linux user
+### Note for GNU/Linux users
 
 `-ftime-trace` is only available with [clang](https://clang.llvm.org). With [conda](https://docs.conda.io/en/latest/), you can install it with the following command line `conda install clangxx`.
 
