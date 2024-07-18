@@ -176,7 +176,7 @@ Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-t
 
 [leaks](https://keith.github.io/xcode-man-pages/leaks.1.html) is an alternative tool available on macOS to detect memory leaks:
 ```
-$ leaks leaks -atExit -- myprog
+$ leaks -atExit -- myprog
 
 Date/Time:       2024-07-17 17:46:43.948 +0200
 Launch Time:     2024-07-17 17:46:42.781 +0200
