@@ -162,7 +162,7 @@ cd <cloned-flamegraph-repo>
 
 As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
 
-## Finding memory leacks
+## Finding memory leaks
 
 [Valgrind](https://valgrind.org/) can automatically detect many memory management and threading bugs.
 
@@ -173,6 +173,29 @@ valgrind --leak-check=yes myprog arg1 arg2
 ```
 
 Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
+
+[leaks](https://keith.github.io/xcode-man-pages/leaks.1.html) is an alternative tool available on macOS to detect memory leaks:
+```
+$ leaks -atExit -- myprog
+
+Date/Time:       2024-07-17 17:46:43.948 +0200
+Launch Time:     2024-07-17 17:46:42.781 +0200
+OS Version:      macOS 14.5 (23F79)
+Report Version:  7
+Analysis Tool:   Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 15.4 (15F31d)
+
+Physical footprint:         4646K
+Physical footprint (peak):  4646K
+Idle exit:                  untracked
+----
+
+leaks Report Version: 4.0, multi-line stacks
+Process 56686: 507 nodes malloced for 47 KB
+Process 56686: 0 leaks for 0 total leaked bytes.
+```
+Check out [here](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/ManagingMemory/Articles/FindingLeaks.html) for more information.
+
 
 ### AddressSanitizer
 
