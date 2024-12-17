@@ -328,3 +328,16 @@ Then, when running CMake **for the first time** use the following command:
 ```bash
 CC=clang CXX=clang++ cmake ..
 ```
+## Get stack size
+
+The stack of a program is limited in memory space available. One way to get this value is to run in your favorite terminal:
+
+```bash 
+ulimit -s
+```
+
+More information on the current configuration can be obtained via:
+
+```bash
+ulimit -a
+```
