@@ -295,7 +295,7 @@ Then, when running CMake **for the first time** use the following command:
 CC=clang CXX=clang++ cmake ..
 ```
 
-## Launch a process on a partical CPU/CORE/PU
+## Launch a process on a particular CPU/CORE/PU
 
 [hwloc tools](https://www.open-mpi.org/projects/hwloc/) allow to study computer and computer cluster topology.
 
@@ -311,7 +311,7 @@ You can show your computer architecture topology with:
 lstopo
 ```
 
-Also, you can run a process on a particuler CPU/CORE/PU with tho following command:
+Also, you can run a process on a particular CPU/CORE/PU with the following command:
 
 ```bash
 # Run my_exe on processing unit 0
@@ -320,7 +320,7 @@ hwloc-bind pu:0 -- my_exe
 hwloc-bind pu:2 -- my_exe
 ```
 
-You can then watch where process are running with:
+You can then watch where processes are running with:
 
 ```bash
 lstopo --ps
