@@ -21,6 +21,17 @@ Use [**mold**](https://github.com/rui314/mold) to speed up the linking. For cmak
 add_link_options("-fuse-ld=mold")
 ```
 
+Tip: To compile a current dev branch like hpp-fcl in a clean conda environment containing just the necessary dependencies, install `compilers` and use conda's `cmake` to ensure compatibility and avoid local dependency conflicts..
+```
+conda create --name ENV_NAME python=3.12
+conda activate ENV_NAME
+conda install -c conda-forge cmake compilers
+conda install hpp-fcl --only-deps
+mkdir build && cd build
+cmake .. -DALL_YOUR_FLAGS
+make -j8
+```
+
 ## Debugging C++ code
 
 If you execute compiled experimental code or run a python script that is corresponding c++ bindings [Segmentation Faults](https://en.wikipedia.org/wiki/Segmentation_fault). Specific tools can help you to fix them.  
@@ -162,7 +173,7 @@ cd <cloned-flamegraph-repo>
 
 As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
 
-## Finding memory leacks
+## Finding memory leaks
 
 [Valgrind](https://valgrind.org/) can automatically detect many memory management and threading bugs.
 
@@ -173,6 +184,29 @@ valgrind --leak-check=yes myprog arg1 arg2
 ```
 
 Check [here](https://stackoverflow.com/questions/5134891/how-do-i-use-valgrind-to-find-memory-leaks) and [doc](https://valgrind.org/docs/manual/quick-start.html) for further explanation.
+
+[leaks](https://keith.github.io/xcode-man-pages/leaks.1.html) is an alternative tool available on macOS to detect memory leaks:
+```
+$ leaks -atExit -- myprog
+
+Date/Time:       2024-07-17 17:46:43.948 +0200
+Launch Time:     2024-07-17 17:46:42.781 +0200
+OS Version:      macOS 14.5 (23F79)
+Report Version:  7
+Analysis Tool:   Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 15.4 (15F31d)
+
+Physical footprint:         4646K
+Physical footprint (peak):  4646K
+Idle exit:                  untracked
+----
+
+leaks Report Version: 4.0, multi-line stacks
+Process 56686: 507 nodes malloced for 47 KB
+Process 56686: 0 leaks for 0 total leaked bytes.
+```
+Check out [here](https://developer.apple.com/library/archive/documentation/Performance/Conceptual/ManagingMemory/Articles/FindingLeaks.html) for more information.
+
 
 ### AddressSanitizer
 
@@ -327,3 +361,18 @@ lstopo --ps
 ```
 
 To go deeper, a [tutorial](https://www.open-mpi.org/projects/hwloc/tutorials/20120702-POA-hwloc-tutorial.html) is available.
+
+## Get stack size
+
+The stack of a program is limited in memory space available. One way to get this value is to run in your favorite terminal:
+
+```bash 
+ulimit -s
+```
+
+More information on the current configuration can be obtained via:
+
+```bash
+ulimit -a
+```
+
