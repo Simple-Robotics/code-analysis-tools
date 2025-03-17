@@ -297,11 +297,11 @@ Run the CI and follow the output. Note: the option `continue-on-error: True` can
 Consider using the action with `limit-access-to-actor: true`, to limit access to your account.
 
 
-## Profile C++ compile time
+## Profile C++ compile time of a translation unit
 
 When doing heavy template meta-programming in C++ it can be useful to analyze what part of the code is taking a long time to compile.
 
-[clang](https://clang.llvm.org) allows to profile the compilation time. To activate this function, add the `-ftime-trace` option while building.
+[clang](https://clang.llvm.org) allows to profile the compilation time of a translation unit. To activate this function, add the `-ftime-trace` option while building.
 
 In a CMake project, you can do this with the following command line:
 
@@ -317,7 +317,7 @@ find . -iname "*.json"
 
 Then, you can open the file with the [Chromium tracing tool](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/). Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
 
-![Compile time profile displayed with Chromimum](./resources/cpp-compilation-time-profile.png)
+![Compile time translation unit profile displayed with Chromimum](./resources/cpp-compilation-time-profile.png)
 
 ### Note for GNU/Linux users
 
@@ -328,6 +328,41 @@ Then, when running CMake **for the first time** use the following command:
 ```bash
 CC=clang CXX=clang++ cmake ..
 ```
+
+
+## Profile C++ compile time of a CMake target
+
+When building a CMake target, it's interesting to profile which translation unit took most of the compile time.
+
+Ninja and [ninjatracing](https://github.com/nico/ninjatracing) allow to do visualize the whole target build time.
+
+First clone [ninjatracing](https://github.com/nico/ninjatracing) somewhere.
+
+Then configure your CMake build to use Ninja. Run the following command in a **NEW** build directory:
+
+```bash
+cmake .. -GNinja
+```
+
+Now, build your project with Ninja:
+
+```bash
+ninja
+```
+
+The `.ninja_log` file should had been created in the build directory.
+You can convert it to a file compatible with the [Chromium tracing tool](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/).
+
+Run the following command:
+
+```bash
+path/to/ninjatracing .ninja_log > trace.json
+```
+
+Now, you can visualize it with the [Chromium tracing tool](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/). Open the `about:tracing` URL in Chromium and load the .json. You will have the following display:
+
+![Compile time CMake target profile displayed with Chromimum](./resources/cpp-cmake-target-compilation-time-profile.png)
+
 
 ## Launch a process on a particular CPU/CORE/PU
 
