@@ -411,3 +411,50 @@ More information on the current configuration can be obtained via:
 ulimit -a
 ```
 
+## Counting number of lines of codes
+
+It might be useful at some point to count the number of lines of code in a given project.
+[Cloc](https://github.com/AlDanial/cloc) is an open-source tool that counts blank lines, comment lines, and physical lines of source code in many programming languages. 
+
+In [Pinocchio](https://github.com/stack-of-tasks/pinocchio), counting the important lines of code can be done using:
+
+```bash
+cloc unittest src include examples bindings 
+```
+
+which gives:
+```
+    3149 text files.
+    2299 unique files.                                          
+     970 files ignored.
+
+github.com/AlDanial/cloc v 2.04  T=0.90 s (2543.7 files/s, 395546.2 lines/s)
+--------------------------------------------------------------------------------
+Language                      files          blank        comment           code
+--------------------------------------------------------------------------------
+C/C++ Header                    672          20927          20408         107549
+C++                             423          15686           4418          61598
+XML                             154            101            120          53449
+CMake                           325           2595           4955          18197
+Python                          214           4459           2277          15361
+make                             13           2073           1463           4100
+INI                             100            657              0           4047
+Markdown                         71            976             40           2509
+Text                             89            231              0           1444
+CSS                               4            138             57            549
+YAML                             10             48             10            519
+Bourne Shell                      4             83            167            444
+SVG                               1              1              1            382
+Jupyter Notebook                  1              0            655            214
+JavaScript                      196            196           3332            196
+TeX                               5              0              0            167
+reStructuredText                  8            102             83            147
+HTML                              4              1             25             92
+Objective-C                       1             11             16             92
+JSON                              1              0              0             46
+Bourne Again Shell                2             14             12             45
+awk                               1              0              0             10
+--------------------------------------------------------------------------------
+SUM:                           2299          48299          38039         271157
+--------------------------------------------------------------------------------
+```
