@@ -411,7 +411,7 @@ More information on the current configuration can be obtained via:
 ulimit -a
 ```
 
-## Counting line of codes
+## Counting number of lines of codes
 
 It might be useful at some point to count the number of lines of code in a given project.
 [Cloc](https://github.com/AlDanial/cloc) is an open-source tool that counts blank lines, comment lines, and physical lines of source code in many programming languages. 
