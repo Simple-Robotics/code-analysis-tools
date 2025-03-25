@@ -21,12 +21,12 @@ Use [**mold**](https://github.com/rui314/mold) to speed up the linking. For cmak
 add_link_options("-fuse-ld=mold")
 ```
 
-Tip: To compile a current dev branch like hpp-fcl in a clean conda environment containing just the necessary dependencies, install `compilers` and use conda's `cmake` to ensure compatibility and avoid local dependency conflicts..
+Tip: To compile a current dev branch like [coal](https://github.com/coal-library/coal) in a clean conda environment containing just the necessary dependencies, install `compilers` and use conda's `cmake` to ensure compatibility and avoid local dependency conflicts..
 ```
 conda create --name ENV_NAME python=3.12
 conda activate ENV_NAME
 conda install -c conda-forge cmake compilers
-conda install hpp-fcl --only-deps
+conda install coal --only-deps
 mkdir build && cd build
 cmake .. -DALL_YOUR_FLAGS
 make -j8
