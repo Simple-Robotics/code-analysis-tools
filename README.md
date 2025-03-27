@@ -184,7 +184,7 @@ To use it in your project, you can follow the same steps as in pinocchio or simp
 ```cmake
 if(PROJECT_NAME_BUILD_WITH_TRACY)
   # assume it is installed somewhere
-  add__NAME_dependency(Tracy REQUIRED)
+  add_project_dependency(Tracy REQUIRED)
   set_target_properties(Tracy::TracyClient PROPERTIES POSITION_INDEPENDENT_CODE True)
 endif(PROJECT_NAME_BUILD_WITH_TRACY)
 ```
