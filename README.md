@@ -185,7 +185,6 @@ To use it in your project, you can follow the same steps as in pinocchio or simp
 if(PROJECT_NAME_BUILD_WITH_TRACY)
   # assume it is installed somewhere
   add_project_dependency(Tracy REQUIRED)
-  set_target_properties(Tracy::TracyClient PROPERTIES POSITION_INDEPENDENT_CODE True)
 endif(PROJECT_NAME_BUILD_WITH_TRACY)
 ```
 4. In your code: `#include "project_name/tracy.hpp"` and use `PROJECT_NAME_TRACY_ZONE_SCOPED_N("NAME_OF_ZONE")` , see [here](https://github.com/jrl-umi3218/jrl-cmakemodules/blob/b5ae8e49306840a50ae9c752c5b4040f892c89d8/tracy.hh.cmake) for all macros.
