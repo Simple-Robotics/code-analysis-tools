@@ -187,7 +187,8 @@ if(PROJECT_NAME_BUILD_WITH_TRACY)
   add_project_dependency(Tracy REQUIRED)
 endif(PROJECT_NAME_BUILD_WITH_TRACY)
 ```
-4. In your code: `#include "project_name/tracy.hpp"` and use `PROJECT_NAME_TRACY_ZONE_SCOPED_N("NAME_OF_ZONE")` , see [here](https://github.com/jrl-umi3218/jrl-cmakemodules/blob/b5ae8e49306840a50ae9c752c5b4040f892c89d8/tracy.hh.cmake) for all macros.
+4. In your code: `#include "project_name/tracy.hpp"` and use `PROJECT_NAME_TRACY_ZONE_SCOPED_N("NAME_OF_ZONE")` , where project_name should be replaced by your actual project name.
+See [here](https://github.com/jrl-umi3218/jrl-cmakemodules/blob/b5ae8e49306840a50ae9c752c5b4040f892c89d8/tracy.hh.cmake) for all macros.
 
 After specifying the code segments you wish to monitor with Tracy, execute `tracy-profiler` from the command line (ensure your conda environment is active). Run your benchmark files and review the various statistics in the GUI. Note that if you are benchmarking on a remote server, you can connect to it using `ssh user@remote -X` to display the Tracy GUI on your screen.
 
