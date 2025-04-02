@@ -118,7 +118,7 @@ With `pdb++`, add breakpoints again with `breakpoint()`. You may run `sticky` in
 
 For debugging code with a graphical interface, check [pudb](https://documen.tician.de/pudb/starting.html) (similar usage).
 
-## Performance analysis
+## Performance analysis with FlameGraph
 
 Checking how much time is spent for every function. Can help you to find the bottleneck in your code.
 [FlameGraph](https://github.com/brendangregg/FlameGraph) is a nice visual tool to display your stack trace.
@@ -172,6 +172,25 @@ cd <cloned-flamegraph-repo>
 ```
 
 As the process with the default flamegraph repo is quite a pain, you can write your own script like @ManifoldFR in [proxDDP](https://github.com/Simple-Robotics/proxddp/blob/wj/nnl-rollout/scripts/make_flamegraph.sh).
+
+## Performance analysis with Tracy Profiler 
+Tracy is a real time, nanosecond resolution, remote telemetry, hybrid frame and sampling profiler for games and other applications that comes with a nice [documentation](https://github.com/wolfpld/tracy/releases/latest/download/tracy.pdf).
+You can checkout the interactive [demo](https://tracy.nereid.pl/).
+
+To use it in your project, you can follow the same steps as in pinocchio or simple:
+1. Install it via: `conda install tracy-profiler tracy-profiler-gui -c conda-forge`
+2. Include `tracy.cmake` from jrl-cmakemodules in your main CMakeLists file
+3. Add tracy as project dependency e.g.
+```cmake
+if(PROJECT_NAME_BUILD_WITH_TRACY)
+  # assume it is installed somewhere
+  add_project_dependency(Tracy REQUIRED)
+endif(PROJECT_NAME_BUILD_WITH_TRACY)
+```
+4. In your code: `#include "project_name/tracy.hpp"` and use `PROJECT_NAME_TRACY_ZONE_SCOPED_N("NAME_OF_ZONE")` , where project_name should be replaced by your actual project name.
+See [here](https://github.com/jrl-umi3218/jrl-cmakemodules/blob/b5ae8e49306840a50ae9c752c5b4040f892c89d8/tracy.hh.cmake) for all macros.
+
+After specifying the code segments you wish to monitor with Tracy, execute `tracy-profiler` from the command line (ensure your conda environment is active). Run your benchmark files and review the various statistics in the GUI. Note that if you are benchmarking on a remote server, you can connect to it using `ssh user@remote -X` to display the Tracy GUI on your screen.
 
 ## Finding memory leaks
 
