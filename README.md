@@ -290,31 +290,27 @@ Some very [useful advices to optimize your C++ code that you should have in mind
 
 A nice online course to [get started with C++](https://gitlab.inria.fr/formations/cpp/gettingstartedwithmoderncpp/tree/master) explaining most of the basic concepts in c++14/17.
 
-## Debug Github CI
+## Debug GitHub CI (SSH)
 
-If you have a pipeline that is failing, and you would like to check some quick fixes directly on the CI machine [debug-via-ssh](https://github.com/marketplace/actions/debug-via-ssh) is precious:
-Sign into your account on [ngrok](https://ngrok.com/) (you can use github) and follow the readme to set it up locally (2mins).
-Copy the token you obtained from ngrok into the secrets section of your repo, specify a password for the SSH connection also as token of the repo.
-Copy this to your workflow at the position where you would like to stop:
+If your GitHub Actions pipeline fails and you want to inspect the environment directly, you can open an SSH session with [action-tmate](https://github.com/mxschmitt/action-tmate). It launches an interactive terminal in your job, allowing real-time debugging.
 
-```bash
-- name: Start SSH session
-  uses: luchihoratiu/debug-via-ssh@main
-  with:
-    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-    SSH_PASS: ${{ secrets.SSH_PASS }}
-```
+1. Add this step at the point where you want the workflow to pause:
+  ```yaml
+  - name: Start SSH session
+    uses: mxschmitt/action-tmate@v3
+    with:
+      limit-access-to-actor: true
+  ```
+2. Run the CI
+3. An SSH connection command will appear in the workflow log for you to copy and run in your terminal.
 
-Run the CI and follow the output. Note: the option `continue-on-error: True` can be very useful the continue a failing workflow until the point where you ssh to it.
+**Tip:** the option `continue-on-error: true` can be helpful since you’ll often want to investigate a previous step that failed. It prevents the workflow from stopping immediately on error and allows it to continue to your SSH step so you can connect and debug the environment.
 
-[lhotari/action-upterm](https://github.com/lhotari/action-upterm) and [action-tmate](https://github.com/marketplace/actions/debugging-with-tmate) are also two alternative GitHub actions with similar functionality that can be ran directly without any setup in your CI jobs:
+**Note:** `limit-access-to-actor: true` means that only the GitHub user who triggered the workflow can connect — using an SSH key already registered on their GitHub account.
 
-```bash
-- name: Start SSH session
-  uses: lhotari/action-upterm@v1
-```
-Consider using the action with `limit-access-to-actor: true`, to limit access to your account.
-
+Alternative:
+* [lhotari/action-upterm](https://github.com/lhotari/action-upterm) provides similar functionality.
+* [debug-via-ssh](https://github.com/marketplace/actions/debug-via-ssh) is **not recommended** since it relies on [ngrok](https://ngrok.com/) which requires credit card information to function.
 
 ## Profile C++ compile time of a translation unit
 
