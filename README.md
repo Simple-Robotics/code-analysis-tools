@@ -473,3 +473,50 @@ awk                               1              0              0             10
 SUM:                           2299          48299          38039         271157
 --------------------------------------------------------------------------------
 ```
+
+# Realtime Sanitizer (RTSan)
+
+Allows to detect any non-deterministic behavior in a piece of code, like dynamic allocations, mutex locks, systems calls etc.
+It comes with `clang-20`, but with a bit of effort can be user in older versions and GCC with the standalone project (ref below). 
+besically all you need to do is add the function attribute `[[clang::nonblocking]]` in your function and compile with `-fsanitize=realtime`.
+
+The `Function Effect Analysis` is a sister project that can detect those in compile-time, where the sanitizers are runtime-only.
+To get compile-time analysis, compile with `-Wfunction-effects`.
+
+`a.cpp`
+```c++
+void f() [[clang::nonblocking]] {
+    std::vector<int> v;
+    v.push_back(1);
+}
+
+int main() {
+    f();
+    return 0;
+}
+```
+`CMakeLists.txt`
+```cmake
+cmake_minimum_required(VERSION 3.22)
+project(a)
+add_executable(a a.cpp)
+target_compile_options(a PRIVATE -Werror=function-effects) # compile-time checks
+target_compile_options(a PRIVATE -fsanitize=realtime)      # runtime checks
+target_link_options(a PRIVATE -fsanitize=realtime)         # runtime checks
+```
+
+Try online: https://godbolt.org/z/ozYGc63rE
+
+refs:
+
+LLVM’s Real-Time Safety Revolution:
+https://www.youtube.com/watch?v=b_hd5FAv1dw
+
+Standalone RTSan (devmode): https://github.com/realtime-sanitizer/rtsan
+
+Official documentation: 
+https://clang.llvm.org/docs/RealtimeSanitizer.html
+
+https://clang.llvm.org/docs/FunctionEffectAnalysis.html
+
+
